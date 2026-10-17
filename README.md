@@ -32,8 +32,8 @@ O simulador iOS exige macOS; no Windows, use iPhone físico com Expo Go.
 
 A interface usa componentes React Native e StyleSheet. Não há navegação nesta
 etapa; quando necessária, usar Expo Router. Backend e autenticação ainda não
-estão implementados. O painel anterior não foi convertido para telas nativas:
-esta entrega cobre a base Expo, a estrutura documentada e uma tela inicial.
+estão implementados. A tela de detalhes foi implementada conforme o print do Figma:
+inclui busca, filtros, seleção, edição em memória e histórico da sessão.
 
 ## Verificações
 
@@ -55,3 +55,27 @@ npm run dev
 ```
 
 Documentação: https://docs.expo.dev/versions/v57.0.0/
+
+## Tela de detalhes do contrato
+
+Layout baseado no print do Figma: cabeçalho, pesquisa geral, lista lateral,
+indicadores de situação e cartões de processo, modalidade, prazo, objeto,
+vigência, valor global e unidade responsável.
+
+No celular, o botão Contratos abre a lista e os filtros; os cartões ficam
+empilhados. No desktop, a lista permanece na lateral.
+
+Os cinco contratos e o perfil Marina Silva são fictícios. Os prazos são um
+snapshot da referência visual, sem relação com a data atual. Nenhuma API está
+conectada. Editar contrato atualiza os dados e o histórico apenas em memória;
+recarregar restaura os dados iniciais. Notificações exibem os alertas desse
+conjunto fictício. Não há autenticação nem persistência nesta etapa.
+
+Verificações de busca, formato de datas e validação monetária: `npm test`.
+
+## Dependências
+
+A auditoria de 15/10/2026 ainda aponta 22 alertas nas dependências transitivas
+(7 moderados e 15 altos), ligados à cadeia Expo/Metro e suas ferramentas.
+As atualizações compatíveis de shell-quote e source-map-js foram aplicadas.
+Não foi feito downgrade forçado do Expo ou React Native sugerido pelo npm.
