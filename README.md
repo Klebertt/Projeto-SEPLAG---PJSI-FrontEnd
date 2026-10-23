@@ -1,10 +1,11 @@
 # SGC — SEPLAG Alagoas
 
-Base em React Native, Expo SDK 57 e TypeScript.
+Frontend React Native com Expo SDK 57, TypeScript e Expo Router. Implementação
+das telas do projeto SGC enviado como ZIP do Figma Make.
 
 ## Executar
 
-Node.js 22.13 ou superior (configurado com Node 24).
+Use Node.js 24 (ou versão compatível com o SDK).
 
 ```powershell
 cd "D:\vscode projetos\sgc-frontend"
@@ -12,70 +13,68 @@ npm install
 npm start
 ```
 
-Abra o QR code no Expo Go compatível com SDK 57, usando a mesma rede do computador.
-Para navegador: `npm run web`. Para emulador Android já configurado: `npm run android`.
-O simulador iOS exige macOS; no Windows, use iPhone físico com Expo Go.
+Pressione `w` no terminal para abrir no navegador, ou execute `npm run web`.
+No celular, use Expo Go compatível com o SDK 57 e a mesma rede do computador.
+`npm run android` requer emulador configurado; o simulador iOS exige macOS.
+
+## Demonstração
+
+Na tela de login, use um e-mail fictício válido, qualquer senha não vazia e
+selecione um setor. Nenhuma senha é armazenada ou enviada a um servidor.
+O perfil Mariana Ribeiro é ilustrativo, conforme o protótipo.
+
+Esta entrega contém login e saída, consulta, busca por empresa/processo,
+filtros de situação combináveis, cadastro, edição, histórico lateral com
+detalhes expansíveis e histórico completo por contrato. O menu do usuário
+contém **Cadastrar contrato** e **Sair do sistema**.
+
+O cadastro inclui o novo registro na lista; a edição atualiza os cartões e
+registra campo, valor anterior e novo valor no histórico correspondente.
+Cancelar não altera os dados. Processos duplicados, datas inválidas ou
+invertidas e valores não positivos são rejeitados. Datas são digitadas como
+DD/MM/AAAA; valores usam vírgula decimal, sem separadores de milhar.
+
+Os quatro contratos e os registros iniciais são fictícios. Os prazos iniciais
+reproduzem o snapshot do Figma; não representam a data atual. Ao cadastrar ou
+alterar a vigência, o prazo é recalculado pela data local; a situação continua
+sendo um campo selecionado pelo usuário, como no protótipo.
+
+Todos os dados ficam em memória. Recarregar ou encerrar o aplicativo restaura
+os exemplos e exige entrar novamente. Sair encerra apenas a sessão demonstrativa.
+Autenticação real, autorização, persistência e auditoria confiável dependem do
+backend. O controle de rotas do frontend não substitui essas proteções.
 
 ## Estrutura
 
-- App.tsx: componente raiz e providers.
-- index.ts: registro do aplicativo.
-- app.json: configuração Expo.
-- assets/: ícones de instalação.
-- src/screens/: telas; HomeScreen é a tela inicial.
-- src/components/: componentes reutilizáveis.
-- src/assets/: imagens e fontes das telas.
-- src/services/: integração futura com backend.
-- src/data/: dados fictícios.
-- src/styles/: cores e estilos compartilhados.
-- legacy-web/: painel React/Vite anterior preservado.
-
-A interface usa componentes React Native e StyleSheet. Não há navegação nesta
-etapa; quando necessária, usar Expo Router. Backend e autenticação ainda não
-estão implementados. A tela de detalhes foi implementada conforme o print do Figma:
-inclui busca, filtros, seleção, edição em memória e histórico da sessão.
+- `src/app/`: rotas e layouts do Expo Router.
+- `src/screens/`: login, detalhes, formulário de cadastro/edição e histórico.
+- `src/components/`: botões, campos, menu, lista lateral, painéis e linha do tempo.
+- `src/state/`: sessão demonstrativa, contratos e histórico compartilhados.
+- `src/types/`: modelos TypeScript.
+- `src/utils/`: pesquisa, formatação, validação e geração de registros de auditoria.
+- `src/data/`: dados fictícios e opções dos formulários.
+- `src/styles/`: cores e fontes derivadas do Figma; DM Sans embutida pelo pacote.
+- `src/assets/` e `assets/`: recursos visuais e ícones de instalação.
+- `src/services/`: reservado à integração com o backend.
+- `tests/`: testes de regras dos formulários, pesquisa e auditoria.
+- `legacy-web/`: painel React/Vite anterior preservado.
 
 ## Verificações
 
 ```powershell
 npm run typecheck
 npm run lint
+npm test
 npx expo-doctor
 npx expo export --platform all
 ```
 
-## Painel anterior
+O ZIP original foi usado como referência, sem executar suas configurações de
+deploy ou substituir a configuração Expo. Não há URLs temporárias do Figma nos
+componentes. O backend pode ser integrado posteriormente em `src/services`.
 
-Para executar a versão web preservada:
+## Pendências de dependências
 
-```powershell
-cd legacy-web
-npm ci
-npm run dev
-```
-
-Documentação: https://docs.expo.dev/versions/v57.0.0/
-
-## Tela de detalhes do contrato
-
-Layout baseado no print do Figma: cabeçalho, pesquisa geral, lista lateral,
-indicadores de situação e cartões de processo, modalidade, prazo, objeto,
-vigência, valor global e unidade responsável.
-
-No celular, o botão Contratos abre a lista e os filtros; os cartões ficam
-empilhados. No desktop, a lista permanece na lateral.
-
-Os cinco contratos e o perfil Marina Silva são fictícios. Os prazos são um
-snapshot da referência visual, sem relação com a data atual. Nenhuma API está
-conectada. Editar contrato atualiza os dados e o histórico apenas em memória;
-recarregar restaura os dados iniciais. Notificações exibem os alertas desse
-conjunto fictício. Não há autenticação nem persistência nesta etapa.
-
-Verificações de busca, formato de datas e validação monetária: `npm test`.
-
-## Dependências
-
-A auditoria de 15/10/2026 ainda aponta 22 alertas nas dependências transitivas
-(7 moderados e 15 altos), ligados à cadeia Expo/Metro e suas ferramentas.
-As atualizações compatíveis de shell-quote e source-map-js foram aplicadas.
-Não foi feito downgrade forçado do Expo ou React Native sugerido pelo npm.
+A instalação de 23/10/2026 apontou 21 alertas transitivos no npm (3 moderados e
+18 altos). O Expo passou nas verificações de compatibilidade. Não foi aplicado
+`npm audit fix --force`, que pode trocar versões principais e quebrar o SDK.

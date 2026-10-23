@@ -1,24 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { AppText as Text } from './AppText';
 import type { ContractStatus } from '../types/contract';
-
 const palette = {
-  Vigente: { background: '#ECFCF5', border: '#B6EEDA', color: '#008766' },
-  'A vencer': { background: '#FFFAED', border: '#FFE2A6', color: '#B85E00' },
-  Vencido: { background: '#FFF1F4', border: '#FFC5D3', color: '#D90646' },
+  Vigente: { background: '#E7F6EF', color: '#207354' },
+  'A renovar': { background: '#FFF3D3', color: '#9A6400' },
+  'A vencer': { background: '#FFF3D3', color: '#9A6400' },
+  Vencido: { background: '#FBEAEC', color: '#A43F45' },
+  Encerrado: { background: '#EDF0F3', color: '#5F6B7A' },
 };
-
 export function StatusBadge({ status }: { status: ContractStatus }) {
   const tone = palette[status];
-  return (
-    <View style={[styles.badge, { backgroundColor: tone.background, borderColor: tone.border }]}>
-      <View style={[styles.dot, { backgroundColor: tone.color }]} />
-      <Text style={[styles.label, { color: tone.color }]}>{status}</Text>
-    </View>
-  );
+  return <View style={[s.badge, { backgroundColor: tone.background }]}><View style={[s.dot, { backgroundColor: tone.color }]} /><Text style={[s.label, { color: tone.color }]}>{status}</Text></View>;
 }
-
-const styles = StyleSheet.create({
-  badge: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', gap: 5, borderWidth: 1, borderRadius: 20, paddingHorizontal: 8, paddingVertical: 4 },
-  dot: { width: 6, height: 6, borderRadius: 3 },
-  label: { fontSize: 10, fontWeight: '500' },
-});
+const s = StyleSheet.create({ badge: { minHeight: 23, flexDirection: 'row', gap: 5, borderRadius: 20, alignItems: 'center', alignSelf: 'flex-start', paddingHorizontal: 8 }, dot: { width: 5, height: 5, borderRadius: 3 }, label: { fontSize: 10, fontWeight: '700' } });
